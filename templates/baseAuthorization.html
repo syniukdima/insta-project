@@ -1,0 +1,17 @@
+{% load static %}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href=" {% static 'social_network/css/login.css' %} ">
+    <link rel="stylesheet" href=" {% static 'css/authorization_mobile.css' %} ">
+    <link
+    rel="shortcut icon"
+    type="image/png"
+    href="{% static 'img/favicon.ico' %}"
+    />
+</head>
+<body>
+    {% block title %}{% endblock %}
+    {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,20 @@
+<div class="search_user" id="search-button-inp" role="group">
+    <div class="search_user-content">
+        <h1>Пошук</h1>
+        <form method="post" class="search_user-form" hx-post="{% url 'search' %}"
+        hx-target="#search-button-inp" hx-swap="outerHTML">
+      
+            <input name="q" type="text" placeholder="Пошук...">
+        </form>
+        <div class="search_user-data">
+            {% for user_in in search_users %}
+            <div class="user">
+            <img class="avatar online" src="{{ user_in.avatar.avatar.url }}" alt="avatar">
+                <div class="about_user">
+                    <a href="{{ user_in.getUsernameProfile }}" class="nickname">{{user_in.username}} </a>                    
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

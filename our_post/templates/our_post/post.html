@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Post
+{% endblock %}
+
+{% block imgHome %}
+<img class="home_pic" src="{% static 'img/active_home.svg' %}" alt="main_left" />
+{% endblock %}
+
+{% block imgProfile %}
+<img class="profile_pic" src="{% static 'img/profile.svg' %}" alt="profile_left" />
+{% endblock %}
+
+{% block active_main %}
+active_text
+{% endblock %}
+
+{% block content%}
+<div class="post">
+
+  <div class="top_line">
+    <img src="{% static 'img/back.svg' %}" alt="back" class="back_button_profile" onclick="javascript:history.back();">
+    <span class="name__profile">{{ post.userId }}
+      {% if post.userId.is_superuser %}
+      <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+      {% endif %}
+    </span>
+  </div>
+
+  {% load our_post_tags %}
+  {% getUser id=post.userId.id as user %}
+
+  <div class="user_post">
+    <a href="{{ post.userId.getUsernameProfile }}" class="user_avatar-link">
+      <img class="avatar online" src="{{user.avatar.avatar.url}}" alt="avatar" />
+    </a>
+
+    <div class="about_user">
+      <a href="{{ post.userId.getUsernameProfile }}" class="nickname_post post_nick">{{post.userId}}
+        {% if post.userId.is_superuser %}
+        <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+        {% endif %}
+      </a>
+      <span class="post_subtitle post_text">
+        {{post.message}}
+      </span>
+      {% for img in post.content.all %}
+
+      <div class="div_image_post">
+        <img src="{{img.photo.url}}" class="image_post" />
+      </div>
+      {% endfor%}
+      <div class="about_post">
+        <div class="post_like">
+          {% include "our_post/partials/like.html" %}
+        </div>
+        <div class="post_comment">
+          <img src="{% static 'img/lenta/comment.svg'%}" class="post_comment-img" />
+          <span>{{ post.comments.count }}</span>
+
+        </div>
+        <div class="post_time">
+          <span>{{ post.createdAt|date:"M d" }}</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="comment_to_post">
+    <div class="user_add_post">
+      <a href="{{ request.user.getUsernameProfile }}" class="user_avatar-link">
+        <img class="avatar_comments online" src="{{request.user.avatar.avatar.url}}" alt="avatar" />
+      </a>
+
+      <div class="about_user">
+        <a href="{{ request.user.getUsernameProfile }}" class="nickname_post">{{request.user.username}}
+          {% if user.is_superuser %}
+          <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+          {% endif %}
+        </a>
+      </div>
+    </div>
+    <textarea class="post_input form-control" placeholder="Текст коментаря..." id="comment_input" type="text" ,
+      rows="2"></textarea>
+    <button id="post-comment-submit" class="button_comment" onclick="scrollToEndPage()">Відповісти</button>
+  </div>
+  <div id="comment_for_post">
+    {% load our_post_tags %}
+    {% for comment in post.comments.all %}
+    <div class="user_post">
+      <a href="{{ comment.userId.getUsernameProfile }}" class="user_avatar-link">
+        <img class="avatar online" src="{{comment.userId.avatar.avatar.url}}" alt="avatar" />
+      </a>
+
+      <div class="about_user chat_about_user">
+        <a href="{{ comment.userId.getUsernameProfile }}" class="nickname_post">{{comment.userId}}
+          {% if comment.userId.is_superuser %}
+          <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+          {% endif %}
+        </a>
+        <span class="comment_text post_subtitle">{{comment.commentText}}</span>
+        {% if request.user == comment.userId or request.user.is_superuser or post.userId == request.user %}
+        <a href="{{ comment.get_pk_for_delete }}" class="delete_comment-link">
+          <img id="delete_comment" class="delete_comment" src="{% static 'img/no.png' %}" alt="delete_comment">
+        </a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<div class="end_page"></div>
+{% endblock %}
+
+{% block scripts %}
+{{post.id|json_script:"json-posts"}}
+{{request.user.id|json_script:"json-comment-username"}}
+{{request.user.username|json_script:"json-comment-realusername"}}
+{{"/static/img/premium.png"|json_script:"json-img"}}
+{{"/static/img/no.png"|json_script:"json-img-no"}}
+{{"/post/delete/comment/"|json_script:"json-url_dell"}}
+<script src="{% static 'js/textarea.js' %}"></script>
+<script src="{% static 'js/comment.js' %}"></script>
+{% endblock %}

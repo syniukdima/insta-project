@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Notifications
+{% endblock %}
+
+{% block active_message %}
+active_text
+{% endblock %}
+
+{% block content%}
+<div class="post">
+  <div class="user">
+    <img
+      class="avatar online"
+      src="{% static 'assets/dp.png' %}"
+      alt="avatar"
+    />
+    <div class="about_user">
+      <span class="nickname_post"
+        >{{user.username}}</span
+      >
+    </div>
+    
+  </div>
+  <textarea id="post_input" type="text" class="post_input form-control" placeholder="Текст посту..."></textarea>
+  <div>
+    <img src="{% static 'img/lenta/picture.svg' %}" class="picture_item_post" />
+  </div>
+  <div class="button">
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script  src="{% static 'js/textarea.js' %}"></script>
+{% endblock %}

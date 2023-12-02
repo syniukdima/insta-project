@@ -1,0 +1,23 @@
+{% extends "baseAuthorization.html" %}
+{% load static %}
+{% block title %}
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+
+        <h2 class="inactive underlineHover"><a href="{% url 'login' %}">Sign In</a></h2>
+        <h2 class="active">Sign Up</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            &nbsp;
+            {{form}}
+
+            <input type="submit" class="fadeIn fourth" value="Register">
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'social_network/js/signup.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% load static %}
+<div class="user_form_edit-back" id="user_form_edit-back" onclick="EditHide()"></div>
+<div class="user_form_edit" id="user_form_edit">
+    <form method="post" action="{% url 'edit_profile' request.user.username %}" enctype="multipart/form-data" class="user_form_edit-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-f m-my">
+            {{ form_avatar.as_p }}
+        <label class="avatar_file" for="id_avatar">file</label>
+        </div>
+        <div class="id_avatar_show" id="id_avatar_show">
+            <img alt="" id="id_avatar_show-photo" />
+            <img onclick="hideAvatar()" id="id_avatar-hide-img" class="id_avatar-hide-img" src="{% static 'img/no.png' %}" alt="">
+        </div>
+
+        <div class="d-f m-my">
+            {{ form_background.as_p }}
+        <label class="avatar_file" for="id_background">file</label>
+        </div>
+        <div class="id_background_show" id="id_background_show">
+            <img alt="" id="id_background_show-photo" />
+            <img onclick="hideBackground()" id="id_background-hide-img" class="id_background-hide-img" src="{% static 'img/no.png' %}" alt="">
+        </div>
+        
+        <button class="user_form_edit-button">Змінити</button>
+    </form>
+</div>

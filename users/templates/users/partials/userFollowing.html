@@ -1,0 +1,15 @@
+{% load static %}
+<div class="user_form-back" id="user_form-back" onclick="FollowingHide()"></div>
+<div class="user_form" id="user_form">
+    <div class="user_in_form-follow">Following users:</div>
+    {% for user in following.all %}
+    <div class="user_in_form">
+        <img src="{{ user.avatar.avatar.url }}" alt="avatar" class="user_in_form-img">
+        <a href="{{ user.getUsernameProfile }}" class="user_in_form-nickname">{{ user.username }}
+            {% if user.is_superuser %}
+                <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+            {% endif %}
+        </a>
+    </div>
+    {% endfor %}
+</div>

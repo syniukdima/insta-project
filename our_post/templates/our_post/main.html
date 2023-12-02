@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block imgHome %}
+<img class="home_pic" src="{% static 'img/active_home.svg' %}" alt="main_left" />
+{% endblock %}
+
+{% block imgProfile %}
+<img class="profile_pic" src="{% static 'img/profile.svg' %}" alt="profile_left" />
+{% endblock %}
+
+{% block title %}
+Main
+{% endblock %}
+
+{% block active_main %}
+active_text
+{% endblock %}
+
+{% block content%}
+<div class="post">
+  {% if request.user.username %}
+  <div class="user_add_post">
+    <img class="avatar online" src="{{user.avatar.avatar.url}}" alt="avatar" />
+    <div class="about_user">
+      <span class="nickname_post">{{request.user.username}}
+        {% if request.user.is_superuser %}
+          <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+        {% endif %}
+      </span>
+    </div>
+  </div>
+  <form method="post" enctype="multipart/form-data" action="{% url 'our_post' %}" class="post_add">
+    {% csrf_token %}
+   
+    <p><label for="{{ form.message.id_for_label }}" class="m-8"></label>{{ form.message }}</p>
+    <p><label for="{{ form.content.id_for_label }}" class="m-8"><img
+          src="{% static 'img/lenta/picture.svg' %}" /></label>{{ form.content }}</p>
+    <div class="d-f m-8">
+      <div class="row">
+        <div class="post_content" id="contentBox">
+        </div>
+      </div>
+      <button class="button_post">Надіслати</button>
+    </div>
+  </form>
+  {%endif%}
+  <div class="error_message" id="error">
+  </div>
+  {% if not request.user.is_authentificated %}
+  {% for post in posts %}
+  
+  <div class="user_post">
+    <a href="{{ post.userId.getUsernameProfile }}" class="user_avatar-link"><img class="avatar online" src="{{post.userId.avatar.avatar.url}}"
+      alt="avatar" /></a>
+    <div class="about_user">
+    
+      <a href="{{ post.userId.getUsernameProfile }}" class="nickname_post"><span class="nickname_post-span">{{post.userId}}
+        {% if post.userId.is_superuser %}
+          <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+        {% endif %}
+      </span></a>
+ 
+      <span class="post_subtitle">
+        {{post.message}}
+      </span>
+      {% for img in post.content.all %}
+      <div class="div_image_post">
+        <img src="{{img.photo.url}}" class="image_post" />
+      </div>
+      {% endfor%}
+      <div class="about_post">
+        <div class="post_like">
+          {% include "our_post/partials/like.html" %}
+        </div>
+
+        <div class="post_comment">
+          <a href="{{ post.get_absolute_url }}" class="nickname"><img
+              src="{% static 'img/lenta/comment.svg'%}" class="post_comment-img" /></a>
+          <span>{{ post.comments.count }}</span>
+        </div>
+        <div class="post_time">
+          <span>{{ post.createdAt|date:"M d" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% else %}
+  {% for post in posts_following %}
+  
+  <div class="user_post">
+    <a href="{{ post.userId.getUsernameProfile }}" class="user_avatar-link"><img class="avatar online" src="{{post.userId.avatar.avatar.url}}"
+      alt="avatar" /></a>
+    <div class="about_user">
+    
+      <a href="{{ post.userId.getUsernameProfile }}" class="nickname_post"><span class="nickname_post-span">{{post.userId}}
+        {% if post.userId.is_superuser %}
+          <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+        {% endif %}
+      </span></a>
+ 
+      <span class="post_subtitle">
+        {{post.message}}
+      </span>
+      {% for img in post.content.all %}
+      <div class="div_image_post">
+        <img src="{{img.photo.url}}" class="image_post" />
+      </div>
+      {% endfor%}
+      <div class="about_post">
+        <div class="post_like">
+          {% include "our_post/partials/like.html" %}
+        </div>
+
+        <div class="post_comment">
+          <a href="{{ post.get_absolute_url }}" class="nickname"><img
+              src="{% static 'img/lenta/comment.svg'%}" class="post_comment-img" /></a>
+          <span>{{ post.comments.count }}</span>
+        </div>
+        <div class="post_time">
+          <span>{{ post.createdAt|date:"M d" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+<div class="end_page"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/addimg.js' %}"></script>
+<script src="{% static 'js/textarea.js' %}"></script>
+{% endblock %}

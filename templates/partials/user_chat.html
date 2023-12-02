@@ -1,0 +1,19 @@
+{% load static %}
+
+{% for user in users %}
+    <div class="user">
+    <img class="avatar online" src="{{ user.avatar.avatar.url }}" alt="avatar">
+    
+    {% if user.is_online %}
+    <img class="status" src="{% static 'img/Ellipse 3.png' %}">
+    {% endif %}
+    <div class="about_user">
+        <a href="{{ user.getExcludeObjects }}" class="nickname">{{user.username}}{% if user.is_superuser %}
+            <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+          {% endif %}</a>
+        {% if not user.is_online %}
+        <span class="last_time">У мережі {{ user.last_time_online|date:"H:i  D" }}</span>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}

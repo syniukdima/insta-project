@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% load our_post_tags %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block active_profile %}
+active_text
+{% endblock %}
+
+{% block imgHome %}
+<img class="home_pic" src="{% static 'img/home.png' %}" alt="main_left" />
+{% endblock %}
+
+{% block imgProfile %}
+<img class="profile_pic" src="{% static 'img/profile-active.png' %}" alt="profile_left" />
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+{% endblock %}
+
+{% block content%}
+<div class="profile_page">
+  {% include "users/partials/userFollowing.html" %}
+  {% include "users/partials/userFollowers.html" %}
+  {% if request.user.is_authenticated %}
+  {% include "users/partials/editProfile.html" %}
+  {% endif %}
+  <div class="top_line">
+    <img src="{% static 'img/back.svg' %}" alt="back" class="back_button_profile" onclick="javascript:history.back();">
+    <span class="name__profile">{{ author.username }}
+      {% if author.is_superuser %}
+        <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+      {% endif %}
+    </span>
+  </div>
+  <div class="profile_photo_background">
+    <img src="{{ author.background.background.url }}" alt="profile_photo_background"
+      class="profile_photo_background-photo">
+  </div>
+
+  <div class="avatar_on_profile-block">
+    <img src="{{author.avatar.avatar.url}}" alt="avatar" class="avatar_on_profile">
+  </div>
+  <div class="profile_page-body">
+    <div class="about_profile_user">
+      <div class="about_profile_user-first-block">
+        <div class="profile_user_name">
+          {{ author.username }}
+          {% if author.is_superuser %}
+            <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+          {% endif %}
+        </div>
+        <div class="another_users-info">
+          <div class="following" onclick="FollowingShow()">{{ following.count }} Followers</div>
+          <div class="followers" onclick="FollowedShow()">{{ followers.count }} Following</div>
+        </div>
+      </div>
+      <div class="edit_profile">
+        {% if request.user.is_authenticated %}
+        {% if request.user != author %}
+        {% if request.user in author.following.all %}
+        <button class="edit_profile-button">
+          <a class="edit_profile-link" href="{{ author.getPkFollowToggle }}">Unfollow</a>
+        </button>
+        {% else %}
+        <button class="edit_profile-button">
+          <a class="edit_profile-link" href="{{ author.getPkFollowToggle }}">Follow</a>
+        </button>
+        {% endif %}
+        {% else %}
+        <button onclick="EditShow()" class="edit_profile-button">Edit</button>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="block_with_post_user">
+      {% getCountPostUser id=author.id as countPost %}
+      <span class="my_posts">My posts: <span class="my_posts-number">{{ countPost }}</span></span>
+    </div>
+
+    {% getPostUser id=author.id as postThisUser %}
+
+    {% for post in postThisUser %}
+    <div class="user_post">
+      
+      <a href="{{ post.userId.getUsernameProfile }}" class="user_avatar-link"><img class="avatar online" src="{{author.avatar.avatar.url}}"
+          alt="avatar" /></a>
+      
+      <div class="about_user">
+
+        <a href="{{ post.userId.getUsernameProfile }}" class="nickname_post">{{post.userId}}
+          {% if post.userId.is_superuser %}
+            <img src="{% static 'img/premium.png' %}" alt="premium" class="premium-img" />
+          {% endif %}
+        </a>
+        {% if request.user.username == author.username or request.user.is_superuser %}
+        <a href="{{ post.get_pk_for_delete }}" class="delete_post-link">
+          <img id="delete_post" class="delete_post" src="{% static 'img/no.png' %}" alt="delete_post">
+        </a>
+        {% endif %}
+        <span class="post_subtitle">
+          {{post.message}}
+        </span>
+        {% for img in post.content.all %}
+        <div class="div_image_post">
+          <img src="{{img.photo.url}}" class="image_post" />
+        </div>
+        {% endfor%}
+        <div class="about_post" > 
+          <div class="post_like">
+            {% include "our_post/partials/like.html" %}
+          </div>
+          <div class="post_comment">
+            <a href="{{ post.get_absolute_url }}" class="nickname"><img
+              src="{% static 'img/lenta/comment.svg'%}" class="post_comment-img" /></a>
+            <span>{{ post.comments.count }}</span>
+            
+          </div>
+          <div class="post_time"> 
+            <span>{{ post.createdAt|date:"M d" }}</span>
+          </div>
+  
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
+<script src="{% static 'js/showHide_follow.js' %}"></script>
+<script src="{% static 'js/add_photo.js' %}"></script>
+{% endblock %}
