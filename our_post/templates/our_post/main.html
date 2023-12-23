@@ -35,7 +35,7 @@ active_text
    
     <p><label for="{{ form.message.id_for_label }}" class="m-8"></label>{{ form.message }}</p>
     <p><label for="{{ form.content.id_for_label }}" class="m-8"><img
-          src="{% static 'img/lenta/picture.svg' %}" /></label>{{ form.content }}</p>
+          src="{% static 'img/feed/picture.svg' %}" /></label>{{ form.content }}</p>
     <div class="d-f m-8">
       <div class="row">
         <div class="post_content" id="contentBox">
@@ -76,7 +76,7 @@ active_text
 
         <div class="post_comment">
           <a href="{{ post.get_absolute_url }}" class="nickname"><img
-              src="{% static 'img/lenta/comment.svg'%}" class="post_comment-img" /></a>
+                  src="{% static 'img/feed/comment.svg' %}" class="post_comment-img" /></a>
           <span>{{ post.comments.count }}</span>
         </div>
         <div class="post_time">
@@ -115,7 +115,7 @@ active_text
 
         <div class="post_comment">
           <a href="{{ post.get_absolute_url }}" class="nickname"><img
-              src="{% static 'img/lenta/comment.svg'%}" class="post_comment-img" /></a>
+                  src="{% static 'img/feed/comment.svg' %}" class="post_comment-img" /></a>
           <span>{{ post.comments.count }}</span>
         </div>
         <div class="post_time">

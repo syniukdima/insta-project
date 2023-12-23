@@ -3,11 +3,11 @@
       <button hx-post="{{ post.get_pk_for_like }}" id="like-button{{post.id}}" class="like-button"
         hx-target="#likesarea{{post.id}}" hx-swap="outerHTML">
         {% if request.user in post.likes.all %}
-        <img src="{% static 'img/lenta/likeClick.png'%}" style="cursor:pointer;"
-        class="likebutton d-b" />
+        <img src="{% static 'img/feed/likeClick.svg' %}" style="cursor:pointer;"
+             class="likebutton d-b" />
         {% else %}
-        <img src="{% static 'img/lenta/like.svg'%}" style="cursor:pointer;"
-        class="likebutton d-b" />
+        <img src="{% static 'img/feed/like.svg' %}" style="cursor:pointer;"
+             class="likebutton d-b" />
         {% endif %}
       </button>
       <span class="like_number">{{ post.likes.count }}</span>
